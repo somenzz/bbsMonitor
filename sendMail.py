@@ -4,14 +4,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.header import Header
 
+import settings
 
 
 def sendHtmlMail(png_list = []):
-    sender = 'axxxxxx@xxxxx.com'
-    receivers = ['axxxxxx@xxxxx.com']  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
     msgRoot = MIMEMultipart('related')
-    msgRoot['From'] = Header("axxxxxx@xxxxx.com", 'utf-8')
-    msgRoot['To'] =  Header("axxxxxx@xxxxx.com", 'utf-8')
+    msgRoot['From'] = Header(settings.sender, 'utf-8')
+    msgRoot['To'] =  Header(";".join(settings.receivers), 'utf-8')
     subject = '东太湖论坛关键词监控'
     msgRoot['Subject'] = Header(subject, 'utf-8')
     msgAlternative = MIMEMultipart('alternative')
@@ -31,9 +30,15 @@ def sendHtmlMail(png_list = []):
         msgRoot.attach(msgImage)
     msgAlternative.attach(MIMEText(mail_msg, 'html', 'utf-8'))
     try:
+<<<<<<< HEAD
         smtpObj = smtplib.SMTP('mail.xxxxx.com',25)
         smtpObj.login('axxxxxx','as*fasdf')
         smtpObj.sendmail(sender, receivers, msgRoot.as_string())
+=======
+        smtpObj = smtplib.SMTP(settings.host,25)
+        smtpObj.login(settings.username,settings.passwd)
+        smtpObj.sendmail(settings.sender, settings.receivers, msgRoot.as_string())
+>>>>>>> 6f6de1b918df1c469342bd3a722633352f6fc748
         print ("邮件发送完成")
     except smtplib.SMTPException:
         print ("Error: 无法发送邮件")
